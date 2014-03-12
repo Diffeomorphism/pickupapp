@@ -12,10 +12,12 @@ app.controller('MainCtrl', function ($scope, $location) {
 
     }
     
+
+
   });
 
 app.controller('HomeCtrl', function($scope) {
-
+	$scope.userid = 2;
   });
 
 app.controller('GamesCtrl', function($scope, $http, Game) {
@@ -23,13 +25,21 @@ app.controller('GamesCtrl', function($scope, $http, Game) {
 	$scope.loaded = false;
 	$scope.error = false;
 
-	$http({method: 'GET', url: 'data/games.json'}).success(function(data) {
+	$http({method: 'GET', url: 'http://localhost:5000/api/games/'}).success(function(data) {
+		console.log(data);
+	});
+
+	//Game.get({id: 1}, function(data) {
+	//	console.log(data);
+	//})
+
+	/*$http({method: 'GET', url: 'data/games.json'}).success(function(data) {
 		$scope.loaded = true;
 		$scope.games = data;
 	}).error(function(data) {
 		$scope.loaded = true;
 		$scope.error = true;
-	});
+	});*/
 
 
 

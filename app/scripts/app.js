@@ -6,7 +6,7 @@ angular.module('pickupappApp', [
   'ngSanitize',
   'ngRoute'
 ])
-  .config(function ($routeProvider) {
+  .config(function ($httpProvider, $routeProvider) {
       $routeProvider
         .when('/', {
           controller: 'HomeCtrl',
@@ -30,6 +30,9 @@ angular.module('pickupappApp', [
         .otherwise({
           redirectTo: '/'
         });
+
+      $httpProvider.defaults.useXDomain = true;
+      delete $httpProvider.defaults.headers.common['X-Requested-With'];
     });
 
 var app = angular.module('pickupappApp');
@@ -37,15 +40,18 @@ var app = angular.module('pickupappApp');
 //Angular resources for retrieving models
 //Use query for searches without passing in an ID!
 
-app.factory('User', ['$resource', function($resource) {
-  return $resource('/user/:id', {id: '@id'},
+var domain = 'http://127.0.0.1\:5000';
+
+app.factory('User', ['$resource', '$http', function($resource, $http) {
+  return $resource(domain + '/user/:id', {id: '@id'},
   {
-    'update': {method: 'PUT'}
+    'update': {method: 'PUT'},
+    'test': {method: 'JSONP'},
   });
 }]);
 
 app.factory('Game', ['$resource', function($resource) {
-  return $resource('/game/:id', {id: '@id'},
+  return $resource(domain + '/api/games/:id', {id: '@id'},
   {
     'update': {method: 'PUT'}
   });
